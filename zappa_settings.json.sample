@@ -10,7 +10,6 @@
             "SLACK_SIGNING_SECRET": "",
             "SLACK_OAUTH_TOKEN": "",
             "SLACK_CHECK_CHANNEL":"",
-            "REGION_NAME": "",
             "TABLE_NAME":"",
             "KEY_WORD":""
         }
