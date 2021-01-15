@@ -6,7 +6,7 @@ from slackeventsapi import SlackEventAdapter
 import os
 
 
-from db import put_event, put_attendance, put_msg
+from db import put_event, put_attendance, put_msg, update_user
 from db2csv import db2csv
 
 # This `app` represents your existing Flask app
@@ -48,6 +48,16 @@ def reaction_added(event_data):
   print(event)
   print(put_event(event))
   put_attendance(event)
+
+# Create an event listener for "user_change" events
+# To update username in dynamodb when user change their name
+@slack_events_adapter.on("user_change")
+def user_change(event_data):
+    event = event_data["event"]
+    print(event)
+    update_user(event)
+
+
 
 # Start the server on port 3000
 if __name__ == "__main__":

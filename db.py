@@ -162,7 +162,21 @@ def put_attendance(event, channel_id=SLACK_CHECK_CHANNEL, dynamodb=None):
     except Exception as e:
         raise e
 
-
+def update_user(event, dynamodb=None):
+    if not dynamodb:
+        dynamodb = boto3.resource('dynamodb')
+    try:
+        table = dynamodb.Table(USER_TABLE)
+        user = event['user']
+        username = user['profile']['display_name'] if user['profile']['display_name'] else user['profile']['real_name']
+        table.update_item(
+            Key={ 'user_id': user['id'] },
+            UpdateExpression='SET username = :val',
+            ExpressionAttributeValues={ ':val': username }
+        )
+        return "SUCCESS"
+    except Exception as e:
+        raise e
 
 if __name__ == '__main__':
     create_table()
